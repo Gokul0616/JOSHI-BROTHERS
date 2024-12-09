@@ -3,33 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Navbar Example</title>
+  <title>JOSHI BROTHERS</title>
   <link rel="stylesheet" href="styles.css">
-
+<link rel="icon" type="image/x-icon" href="assets/favicon.png">
 <body>
 
   <header>
     <nav class="navbar">
       <div class="logo">
-        <a href="#">JOSHI BROTHERS</a>
+        <img src="assets/logo.png" alt="Joshi Brothers Logo" class="logo-image">
+        <a href="#" class="brand-name"><p style="color: rgb(223, 0, 0);">JOSHI</p> BROTHERS</a>
       </div>
 
       <ul class="nav-links">
         <li><a href="#">Home</a></li>
-        <li><a href="#">Meats</a></li>
-        <li><a href="#">Vegetables</a></li>
-        <li><a href="#">Fruits</a></li>
-        <li><a href="#">Pantry Staples</a></li>
-        <li><a href="#">Subscriptions</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">Catagories</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">About Us</a></li>
       </ul>
 
-      <div class="search-cart">
-        <input type="text" placeholder="Search products..." class="search-bar">
-        <a href="#" class="cart-icon">
-          <img src="https://pics.freeicons.io/uploads/icons/png/14353561371543238919-64.png" alt="Cart">
-        </a>
-      </div>
-
+      
       <div class="hamburger" onclick="toggleMenu()">
         <span class="bar"></span>
         <span class="bar"></span>
@@ -42,36 +36,39 @@
 <footer>
 <div class="footer-content">
 <div class="company-info">
-<h4>Company</h4>
-<p>Zomato Hyperpure Private Limited</p>
-<p>Ground Floor, 12A, 94 Meghdoot, Nehru Place, New Delhi-110019</p>
-<p>CIN: U74900DL2015PTC286208</p>
-<p>011-41171717 | help@hyperpure.com</p>
-<p>Ra License No. 10020004002557</p>
+<h4 class="footer-heading">Company</h4>
+<p style="color: #293142;">JOSHI BROTHERS</p>
+<p style="color: #767c8f; font-size: 14px;">5,Shrinathji Chembers, Danapith Junagadh, Gujarat - India</p>
+<!-- <p style="color: #767c8f;"">CIN: U74900DL2015PTC286208</p> -->
+<p>mananjoshi232@gmail.com</p>
+<!-- <p>Ra License No. 10020004002557</p> -->
 </div>
 <div class="quick-links">
-<h4>Quick Links</h4>
+<h4 class="footer-heading">Quick Links</h4>
 <ul>
-<li><a href="#">Search</a></li>
-<li><a href="#">Know More</a></li>
-<li><a href="#">Corporate Announcements</a></li>
-<li><a href="#">Privacy</a></li>
-<li><a href="#">Terms of use</a></li>
-<li><a href="#">Supplier Code of Conduct</a></li>
+<li><a href="#">Home</a></li>
+<li><a href="#">About Us</a></li>
+<li><a href="#">Contact</a></li>
+<li><a href="#">Our Products</a></li>
+<li><a href="#">Catagories</a></li>
 </ul>
 </div>
 <div class="social-links">
-<h4>Follow us on</h4>
+<h4 class="footer-heading">Follow us on</h4>
 <ul>
 <li><a href="#">Linkedin</a></li>
 <li><a href="#">Youtube</a></li>
 </ul>
 </div>
-<div class="copyright">
-<p>&copy; Hyperpure All Rights Reserved</p>
+<div>
+    <img src="assets/logo.png" alt="Joshi Brothers Logo" class="footer-logo-image">
 </div>
+
 </div>
 </footer>
+<div class="copyright-section">
+    &copy; copyright 2024 JOSHI BROTHERS
+</div>
   <script>
     // Function to toggle the mobile menu
     function toggleMenu() {
