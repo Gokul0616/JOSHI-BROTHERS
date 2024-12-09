@@ -1,0 +1,169 @@
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    }
+    
+    .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    }
+    
+    .company-info, .quick-links, .social-links {
+    flex-basis: 25%;
+    margin: 10px;
+    }
+    
+    .company-info h4, .quick-links h4, .social-links h4 {
+    color: #fff;
+    margin-bottom: 10px;
+    }
+    
+    .company-info p, .quick-links ul, .social-links ul {
+    color: #ccc;
+    margin-bottom: 10px;
+    }
+    
+    .quick-links ul, .social-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    }
+    
+    .quick-links ul li, .social-links ul li {
+    margin-bottom: 10px;
+    }
+    
+    .quick-links a, .social-links a {
+    color: #ccc;
+    text-decoration: none;
+    }
+    
+    .copyright {
+    text-align: center;
+    margin-top: 20px;
+    }
+    
+    .copyright p {
+    color: #ccc;
+    margin-bottom: 10px;
+    }
+     * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background-color: #fff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 10px 20px;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .logo a {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+    }
+
+    .nav-links li {
+      margin: 0 20px;
+    }
+
+    .nav-links li a {
+      color: #333;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .nav-links li a:hover {
+      color: #28a745; /* Green color to highlight links */
+    }
+
+    .search-cart {
+      display: flex;
+      align-items: center;
+    }
+
+    .search-bar {
+      padding: 8px;
+      margin-right: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .cart-icon img {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+    }
+
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .hamburger .bar {
+      width: 25px;
+      height: 3px;
+      background-color: #333;
+      border-radius: 3px;
+    }
+
+    /* Mobile Responsive Design */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        background-color: #fff;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links li {
+        margin: 15px 0;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .search-cart {
+        display: none;
+      }
+    }
+    .main-container{
+        height: 1000px;
+    }

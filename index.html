@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navbar Example</title>
+  <link rel="stylesheet" href="styles.css">
+
+<body>
+
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="#">JOSHI BROTHERS</a>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Meats</a></li>
+        <li><a href="#">Vegetables</a></li>
+        <li><a href="#">Fruits</a></li>
+        <li><a href="#">Pantry Staples</a></li>
+        <li><a href="#">Subscriptions</a></li>
+      </ul>
+
+      <div class="search-cart">
+        <input type="text" placeholder="Search products..." class="search-bar">
+        <a href="#" class="cart-icon">
+          <img src="https://pics.freeicons.io/uploads/icons/png/14353561371543238919-64.png" alt="Cart">
+        </a>
+      </div>
+
+      <div class="hamburger" onclick="toggleMenu()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </nav>
+  </header>
+<div class="main-container"></div>
+
+<footer>
+<div class="footer-content">
+<div class="company-info">
+<h4>Company</h4>
+<p>Zomato Hyperpure Private Limited</p>
+<p>Ground Floor, 12A, 94 Meghdoot, Nehru Place, New Delhi-110019</p>
+<p>CIN: U74900DL2015PTC286208</p>
+<p>011-41171717 | help@hyperpure.com</p>
+<p>Ra License No. 10020004002557</p>
+</div>
+<div class="quick-links">
+<h4>Quick Links</h4>
+<ul>
+<li><a href="#">Search</a></li>
+<li><a href="#">Know More</a></li>
+<li><a href="#">Corporate Announcements</a></li>
+<li><a href="#">Privacy</a></li>
+<li><a href="#">Terms of use</a></li>
+<li><a href="#">Supplier Code of Conduct</a></li>
+</ul>
+</div>
+<div class="social-links">
+<h4>Follow us on</h4>
+<ul>
+<li><a href="#">Linkedin</a></li>
+<li><a href="#">Youtube</a></li>
+</ul>
+</div>
+<div class="copyright">
+<p>&copy; Hyperpure All Rights Reserved</p>
+</div>
+</div>
+</footer>
+  <script>
+    // Function to toggle the mobile menu
+    function toggleMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.classList.toggle('active');
+    }
+
+    // Function to close the menu if the user clicks outside of the navbar
+    function closeMenuIfClickedOutside(event) {
+      const navLinks = document.querySelector('.nav-links');
+      const hamburger = document.querySelector('.hamburger');
+      const isClickInsideNav = navLinks.contains(event.target) || hamburger.contains(event.target);
+
+      // If the click is outside the nav and the menu is open, close it
+      if (!isClickInsideNav && navLinks.classList.contains('active')) {
+        navLinks.classList.remove('active');
+      }
+    }
+// window.addEventListener('scroll',()=>{
+        
+//         if(window.scrollY >700){
+//             header.classList.add("scrolled")
+//         }else{
+//             header.classList.remove("scrolled")
+//         }
+//     })
+    // Add event listener to the document for clicks outside the navbar
+    document.addEventListener('click', closeMenuIfClickedOutside);
+
+    // Close the menu when the search input is focused
+    document.querySelector('.search-bar').addEventListener('focus', function() {
+      const navLinks = document.querySelector('.nav-links');
+      if (navLinks.classList.contains('active')) {
+        navLinks.classList.remove('active');
+      }
+    });
+  </script>
+
+</body>
+</html>
