@@ -157,11 +157,16 @@ header {
   text-decoration: none;
   font-size: 16px;
   font-weight: 500;
+  display: inline-block; 
+  padding: 5px 10px; 
+  border: 2px solid transparent;
+  transition: all 0.3s ease; 
 }
 
 .nav-links li a:hover {
   color: #28a745;
-}
+  border-color: red;
+border-width: 2px solid;}
 
 .search-cart {
   display: flex;
@@ -209,7 +214,7 @@ header {
   .nav-links {
     display: none;
     width: 100%;
-    flex-direction: column;
+    flex-direction: column;z-index: 1;
     background-color: #fff;
     position: absolute;
     top: 60px;
