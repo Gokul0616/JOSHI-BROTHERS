@@ -326,3 +326,100 @@ display: inline;  }
     padding: 10px 20px;
   }
 }
+
+
+/*Stories from partners*//* General Swiper Container Styles */
+.swiper-container {
+  width: 100%;
+  padding: 0; /* Remove extra padding */
+  background-color: #f9f9f9;
+  text-align: center;
+  box-sizing: border-box;
+  margin: 0 auto; /* Center-align content */
+}
+
+.swiper-container h2 {
+  font-size: 24px; /* Adjust font size for mobile */
+  font-weight: bold;
+  margin: 10px 0; /* Reduce spacing */
+  color: #333;
+}
+
+/* Story Card Styling */
+.story {
+  max-width: 90%; /* Ensure proper width on smaller screens */
+  margin: 10px auto; /* Center-align and add consistent spacing */
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px; /* Adjust padding for smaller screens */
+  text-align: left;
+}
+
+.story p {
+  /* font-style: italic; */
+  margin-bottom: 10px;
+  color: #555;
+  font-size: 0.95em; /* Smaller font size for mobile */
+}
+
+/* Author Section Styling */
+.author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.author img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author h4 {
+  margin: 0;
+  font-size: 0.9em;
+  color: #333;
+}
+
+.author p {
+  margin: 0;
+  font-size: 0.8em;
+  color: #777;
+}
+
+/* Remove Extra Space Between Cards */
+.swiper-slide {
+  margin: 0; /* Remove default margins */
+  padding: 0; /* Remove extra padding */
+}
+
+/* Media Queries for Mobile Screens */
+@media (max-width: 768px) {
+  .swiper-container {
+    padding: 0 10px; /* Add light padding for mobile */
+  }
+
+  .swiper-container h2 {
+    font-size: 1.2em; /* Smaller font size */
+  }
+
+  .story {
+    max-width: 95%; /* Maximize width usage on small screens */
+    margin: 10px auto; /* Consistent spacing */
+  }
+
+  .author img {
+    width: 35px;
+    height: 35px; /* Smaller icons for mobile */
+  }
+
+  .author h4 {
+    font-size: 0.8em;
+  }
+
+  .author p {
+    font-size: 0.7em;
+  }
+}
