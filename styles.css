@@ -336,7 +336,7 @@ display: inline;  }
   padding: 40px 20px;
   background-color: #f9f9f9;
 
-overflow: hidden;}
+}
 
 .partners-heading {
   font-size: 28px;
@@ -348,6 +348,7 @@ overflow: hidden;}
 .swiper-container {
   width: 100%;
   max-width: 1200px;
+overflow: hidden;
   margin: 0 auto;
   padding: 20px 0;
 }
@@ -357,22 +358,30 @@ overflow: hidden;}
   justify-content: center;
   align-items: center;
   text-align: left;
-  height: 1000px;
-  width: 100% ;
 }
 
 .story {
+  width: 390px; /* Fixed width */
+  height: 150px; /* Fixed height */
   background: #ffffff;
   border-radius: 8px;
   padding: 20px;
-  max-width: 300px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center; /* Center align content vertically */
+  align-items: center; /* Center align content horizontally */
+  overflow: hidden; /* Prevent overflowing text */
+  text-align: center;
 }
 
 .story p {
   font-size: 16px;
+  text-align: left;
   line-height: 1.5;
   color: #555555;
+  margin: 0; /* Remove any default margin */
+  text-overflow: ellipsis; /* Ensure text truncation if it overflows */
+  overflow: hidden; /* Hide overflowing text */
 }
 
 /* Navigation buttons */
