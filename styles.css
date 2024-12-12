@@ -328,98 +328,79 @@ display: inline;  }
 }
 
 
-/*Stories from partners*//* General Swiper Container Styles */
+/* Stories from partnersGeneral Swiper Container Styles */
+
+/* Partners Section */
+.partners-section {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+
+overflow: hidden;}
+
+.partners-heading {
+  font-size: 28px;
+  color: #293142;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
 .swiper-container {
   width: 100%;
-  padding: 0; /* Remove extra padding */
-  background-color: #f9f9f9;
-  text-align: center;
-  box-sizing: border-box;
-  margin: 0 auto; /* Center-align content */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0;
 }
 
-.swiper-container h2 {
-  font-size: 24px; /* Adjust font size for mobile */
-  font-weight: bold;
-  margin: 10px 0; /* Reduce spacing */
-  color: #333;
-}
-
-/* Story Card Styling */
-.story {
-  max-width: 90%; /* Ensure proper width on smaller screens */
-  margin: 10px auto; /* Center-align and add consistent spacing */
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 15px; /* Adjust padding for smaller screens */
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: left;
+  height: 1000px;
+  width: 100% ;
+}
+
+.story {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 300px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .story p {
-  /* font-style: italic; */
-  margin-bottom: 10px;
-  color: #555;
-  font-size: 0.95em; /* Smaller font size for mobile */
+  font-size: 16px;
+  line-height: 1.5;
+  color: #555555;
 }
 
-/* Author Section Styling */
-.author {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.author img {
+/* Navigation buttons */
+.swiper-button-next, .swiper-button-prev {
+  color: #333333;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
+  position: relative;
 }
 
-.author h4 {
-  margin: 0;
-  font-size: 0.9em;
-  color: #333;
+/* Pagination dots */
+.swiper-pagination-bullet {
+  background-color: #555555;
+}
+.swiper-pagination-bullet-active {
+  background-color: #e54949;
 }
 
-.author p {
-  margin: 0;
-  font-size: 0.8em;
-  color: #777;
-}
-
-/* Remove Extra Space Between Cards */
-.swiper-slide {
-  margin: 0; /* Remove default margins */
-  padding: 0; /* Remove extra padding */
-}
-
-/* Media Queries for Mobile Screens */
+/* Responsive Styling */
 @media (max-width: 768px) {
-  .swiper-container {
-    padding: 0 10px; /* Add light padding for mobile */
-  }
-
-  .swiper-container h2 {
-    font-size: 1.2em; /* Smaller font size */
+  .partners-heading {
+    font-size: 24px;
   }
 
   .story {
-    max-width: 95%; /* Maximize width usage on small screens */
-    margin: 10px auto; /* Consistent spacing */
-  }
-
-  .author img {
-    width: 35px;
-    height: 35px; /* Smaller icons for mobile */
-  }
-
-  .author h4 {
-    font-size: 0.8em;
-  }
-
-  .author p {
-    font-size: 0.7em;
+    max-width: 100%;
+    padding: 15px;
   }
 }
