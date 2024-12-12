@@ -22,8 +22,8 @@
       </div>
 
       <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Brands</a></li>
+        <li><a href="#landing-section">Home</a></li>
+        <li><a href="#popular-brands">Brands</a></li>
         <li><a href="#">Catagories</a></li>
         <li><a href="#">Contact</a></li>
         <li><a href="#">About Us</a></li>
@@ -38,7 +38,7 @@
     </nav>
   </header>
 
-   <section class="landing-section">
+   <section id="landing-section" class="landing-section">
     <div class="overlay">
       <div class="content">
         <h2>20+ categories • 2000+ products</h2>
@@ -74,7 +74,7 @@
     </div>
   </div>
 </section>
-<section class="popular-brands">
+<section id="popular-brands" class="popular-brands">
   <h2>Choose from popular brands</h2>
   <!-- <p>Over 250+ brands available</p> -->
   <div class="brand-container">
@@ -208,8 +208,51 @@
   </div>
 </section>
 
-      <script>
-   const swiper = new Swiper('.swiper-container', {
+  
+    <footer>
+<div class="footer-content">
+<div class="company-info">
+<h4 class="footer-heading">Company</h4>
+<p style="color: #293142;">JOSHI BROTHERS</p>
+<p style="color: #767c8f; font-size: 14px;">5,Shrinathji Chembers, Danapith Junagadh, Gujarat - India</p>
+<!-- <p style="color: #767c8f;"">CIN: U74900DL2015PTC286208</p> -->
+<p>mananjoshi232@gmail.com</p>
+<!-- <p>Ra License No. 10020004002557</p> -->
+</div>
+<div class="quick-links">
+<h4 class="footer-heading">Quick Links</h4>
+<ul>
+<li><a href="#landing-section">Home</a></li>
+<li><a href="#">About Us</a></li>
+<li><a href="#">Contact</a></li>
+<li><a href="#popular-brands">Brands</a></li>
+<li><a href="#">Catagories</a></li>
+</ul>
+</div>
+<div class="social-links">
+<h4 class="footer-heading">Follow us on</h4>
+<ul>
+<li><a href="#">Linkedin</a></li>
+<li><a href="#">Youtube</a></li>
+</ul>
+</div>
+<div>
+    <img src="assets/logo.png" alt="Joshi Brothers Logo" class="footer-logo-image">
+</div>
+
+</div>
+    </footer>
+<div class="copyright-section">
+    &copy; copyright 2024 JOSHI BROTHERS All Rights Reserved
+</div>
+  <script>
+    // Function to toggle the mobile menu
+    function toggleMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.classList.toggle('active');
+    }
+
+     const swiper = new Swiper('.swiper-container', {
   slidesPerView: 1,
   spaceBetween: 10,
   navigation: {
@@ -240,52 +283,6 @@
     },
   },
 });
-
-      </script>
-      
-    <footer>
-<div class="footer-content">
-<div class="company-info">
-<h4 class="footer-heading">Company</h4>
-<p style="color: #293142;">JOSHI BROTHERS</p>
-<p style="color: #767c8f; font-size: 14px;">5,Shrinathji Chembers, Danapith Junagadh, Gujarat - India</p>
-<!-- <p style="color: #767c8f;"">CIN: U74900DL2015PTC286208</p> -->
-<p>mananjoshi232@gmail.com</p>
-<!-- <p>Ra License No. 10020004002557</p> -->
-</div>
-<div class="quick-links">
-<h4 class="footer-heading">Quick Links</h4>
-<ul>
-<li><a href="#">Home</a></li>
-<li><a href="#">About Us</a></li>
-<li><a href="#">Contact</a></li>
-<li><a href="#">Brands</a></li>
-<li><a href="#">Catagories</a></li>
-</ul>
-</div>
-<div class="social-links">
-<h4 class="footer-heading">Follow us on</h4>
-<ul>
-<li><a href="#">Linkedin</a></li>
-<li><a href="#">Youtube</a></li>
-</ul>
-</div>
-<div>
-    <img src="assets/logo.png" alt="Joshi Brothers Logo" class="footer-logo-image">
-</div>
-
-</div>
-    </footer>
-<div class="copyright-section">
-    &copy; copyright 2024 JOSHI BROTHERS All Rights Reserved
-</div>
-  <script>
-    // Function to toggle the mobile menu
-    function toggleMenu() {
-      const navLinks = document.querySelector('.nav-links');
-      navLinks.classList.toggle('active');
-    }
-
     // Function to close the menu if the user clicks outside of the navbar
     function closeMenuIfClickedOutside(event) {
       const navLinks = document.querySelector('.nav-links');
