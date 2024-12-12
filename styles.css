@@ -131,6 +131,8 @@ body {
 header {
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;  z-index: 1000;
+  top: 0;
   padding: 10px 20px;
 }
 
@@ -498,5 +500,101 @@ overflow: hidden;
 
   .feature p {
     font-size: 12px;
+  }
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+.popular-brands {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #fff;
+}
+
+.popular-brands h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.popular-brands p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  color: #555;
+}
+
+.brand-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 30px;
+  justify-content: flex-start;
+  padding-bottom: 20px;
+}
+
+.brand-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  min-width: 200px;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.brand-card img {
+  max-width: 100px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+
+.brand-card h3 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.brand-card p {
+  font-size: 1rem;
+  color: #777;
+}
+
+/* Scrollbar styles for smooth scrolling */
+.brand-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.brand-container::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+.brand-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .popular-brands h2 {
+    font-size: 2rem;
+  }
+
+  .popular-brands p {
+    font-size: 1rem;
+  }
+
+  .brand-container {
+    gap: 15px;
+  }
+
+  .brand-card {
+    min-width: 150px;
   }
 }
