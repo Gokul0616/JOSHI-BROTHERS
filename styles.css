@@ -118,6 +118,9 @@ border-width: 2px solid;
   .footer-logo-image {
     margin: 20px auto; 
   }
+.copyright-section {
+  font-size: 10px;
+}
 }
 * {
   margin: 0;
