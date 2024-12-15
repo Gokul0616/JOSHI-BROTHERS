@@ -347,7 +347,7 @@ font-size: 14px;
 .partners-section {
   text-align: center;
   padding: 40px 20px;
-  background-color: #f9f9f9;
+  background-color: #fff;
 
 }
 
@@ -649,7 +649,8 @@ body {
 }
 
 .section-title h2 {
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .menu-addons-see-all,
@@ -657,7 +658,7 @@ body {
   color: red;
   text-decoration: none;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 /* Unique Card Container */
@@ -741,7 +742,7 @@ body {
 
   .menu-addons-see-all,
   .fruits-see-all {
-    font-size: 12px;
+    font-size: 16px;
   }
 }
 
