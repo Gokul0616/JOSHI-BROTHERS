@@ -1,389 +1,442 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JOSHI BROTHERS</title>
-  <link rel="stylesheet" href="styles.css">
-<link rel="icon" type="image/x-icon" href="assets/favicon.png">
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JOSHI BROTHERS</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/x-icon" href="assets/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
 
-<!-- Swiper JS -->
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
-</head>
-<body>
-
-  <header>
-    <nav class="navbar">
-      <div class="logo">
-        <img src="assets/logo.png" alt="Joshi Brothers Logo" class="logo-image">
-        <a href="#" class="brand-name"><p style="color: rgb(223, 0, 0);">JOSHI</p> BROTHERS</a>
-      </div>
-
-      <ul class="nav-links">
-        <li><a href="#landing-section">Home</a></li>
-        <li><a href="#popular-brands">Brands</a></li>
-        <li><a href="#">Catagories</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">About Us</a></li>
-      </ul>
-
-      
-      <div class="hamburger" onclick="toggleMenu()">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </div>
-    </nav>
-  </header>
-
-   <section id="landing-section" class="landing-section">
-    <div class="overlay">
-      <div class="content">
-        <h2>20+ categories • 2000+ products</h2>
-        <h1>All your restaurant needs delivered next day</h1>
-        <button class="cta-button">Shop now</button>
-      </div>
-    </div>
-  </section>
-
-<section class="why-choose">
-  <h2>Why choose JOSHI BROTHERS?</h2>
-  <div class="features">
-    <div class="feature">
-      <div class="icon-wrapper">
-        <img src="https://cdn-icons-png.flaticon.com/128/11125/11125966.png" alt="Quality Icon" />
-      </div>
-      <h3>Quality</h3>
-      <p>Consistency</p>
-    </div>
-    <div class="feature">
-      <div class="icon-wrapper">
-        <img src="https://cdn-icons-png.flaticon.com/128/17641/17641134.png" alt="Single Vendor Icon" />
-      </div>
-      <h3>Single Vendor</h3>
-      <p>Marketplace</p>
-    </div>
-    <div class="feature">
-      <div class="icon-wrapper">
-        <img src="https://cdn-icons-png.flaticon.com/128/870/870181.png" alt="Next Day Delivery Icon" />
-      </div>
-      <h3>Next Day</h3>
-      <p>Delivery</p>
-    </div>
-  </div>
-</section>
-<section id="popular-brands" class="popular-brands">
-  <h2>Choose from popular brands</h2>
-  <!-- <p>Over 250+ brands available</p> -->
-  <div class="brand-container">
-  <div class="brand-card" onclick="redirectToBrandPage('chingssecret')">
-    <img src="assets/Brand Images/ching'ssecret.jpg" alt="Ching's Secret">
-    <h3>Ching's Secret</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('everest')">
-    <img src="assets/Brand Images/everest.jpg" alt="Everest">
-    <h3>Everest</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('farmking')">
-    <img src="assets/Brand Images/farmking.jpg" alt="Farm King">
-    <h3>Farm King</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('funfoods')">
-    <img src="assets/Brand Images/funfoods.jpg" alt="Funfoods">
-    <h3>Funfoods</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('gocheese')">
-    <img src="assets/Brand Images/gocheese.jpg" alt="Go Cheese">
-    <h3>Go Cheese</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('goldencrown')">
-    <img src="assets/Brand Images/goldencrown.jpg" alt="Golden Crown">
-    <h3>Golden Crown</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('hyfun')">
-    <img src="assets/Brand Images/hyfun.jpg" alt="Hyfun">
-    <h3>Hyfun</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('indiadelights')">
-    <img src="assets/Brand Images/indiadelights.jpg" alt="Indie Delights">
-    <h3>Indie Delights</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('janaki')">
-    <img src="assets/Brand Images/janaki.jpg" alt="Janaki">
-    <h3>Janaki</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('knorr')">
-    <img src="assets/Brand Images/knorr.jpg" alt="Knorr">
-    <h3>Knorr</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('malas')">
-    <img src="assets/Brand Images/malas.jpg" alt="Malas">
-    <h3>Malas</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('manama')">
-    <img src="assets/Brand Images/manama.jpg" alt="Manama">
-    <h3>Manama</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('mdh')">
-    <img src="assets/Brand Images/mdh.jpg" alt="MDH">
-    <h3>MDH</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('nestle')">
-    <img src="assets/Brand Images/mestle.jpg" alt="Nestle">
-    <h3>Nestle</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('moonmoon')">
-    <img src="assets/Brand Images/moonmoon.jpg" alt="Moon Moon">
-    <h3>Moon Moon</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('morde')">
-    <img src="assets/Brand Images/morde.jpg" alt="Morde">
-    <h3>Morde</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('nutralite')">
-    <img src="assets/Brand Images/nutralite.jpg" alt="Nutralite">
-    <h3>Nutralite</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('richs')">
-    <img src="assets/Brand Images/richs.jpg" alt="Rich's">
-    <h3>Rich's</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('veeba')">
-    <img src="assets/Brand Images/veeba.jpg" alt="Veeba">
-    <h3>Veeba</h3>
-  </div>
-  <div class="brand-card" onclick="redirectToBrandPage('weikfield')">
-    <img src="assets/Brand Images/weikfield.jpg" alt="Weikfield">
-    <h3>Weikfield</h3>
-  </div>
-</div>
-
-</section>
-
-<!-- Unique Category Section -->
-  <div id="unique-category-container">
-    <!-- Header -->
-    <div id="unique-category-header">
-      <h1>Buy just about anything</h1>
-      <p>20+ categories • 2000+ products</p>
-    </div>
-
-    <!-- Your Menu Add-ons -->
-    <div id="menu-addons-section">
-      <div class="section-title">
-        <h2>🧈Dairy</h2>
-        <a href="#" class="menu-addons-see-all">see all</a>
-      </div>
-      <div id="menu-addons-container">
-        <div class="unique-card">
-          <img src="assets/productimages/dairy/cream.png" alt="Brownies">
-          <p>Cream</p>
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <img
+            src="assets/logo.png"
+            alt="Joshi Brothers Logo"
+            class="logo-image"
+          />
+          <a href="#" class="brand-name"
+            ><p style="color: rgb(223, 0, 0)">JOSHI</p>
+            BROTHERS</a
+          >
         </div>
-        <div class="unique-card">
-          <img src="assets/productimages/dairy/milk-powder.png" alt="Chutney">
-          <p>Milk Powder</p>
+
+        <ul class="nav-links">
+          <li><a href="#landing-section">Home</a></li>
+          <li><a href="#popular-brands">Brands</a></li>
+          <li><a href="#unique-category">Catagories</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">About Us</a></li>
+        </ul>
+
+        <div class="hamburger" onclick="toggleMenu()">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
         </div>
-        <div class="unique-card">
-          <img src="assets/productimages/dairy/cheese.png" alt="Frozen Snacks">
-          <p>Cheese</p>
-        </div>
-        <div class="unique-card">
-          <img src="assets/productimages/dairy/butter.png" alt="Burger Patties">
-          <p>Butter</p>
+      </nav>
+    </header>
+
+    <section id="landing-section" class="landing-section">
+      <div class="overlay">
+        <div class="content">
+          <h2>20+ categories • 2000+ products</h2>
+          <h1>All your restaurant needs delivered next day</h1>
+          <button class="cta-button">Shop now</button>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Fruits & Vegetables -->
-    <div id="fruits-vegetables-section">
-      <div class="section-title">
-        <h2>🥦 Fruits & Vegetables</h2>
-        <a href="#" class="fruits-see-all">see all</a>
-      </div>
-      <div id="fruits-vegetables-container">
-        <div class="unique-card">
-          <img src="assets/productimages/fruitsandvegetables/indianvegetables.png" alt="Indian Vegetables">
-          <p>Indian Vegetables</p>
+    <section class="why-choose">
+      <h2>Why choose JOSHI BROTHERS?</h2>
+      <div class="features">
+        <div class="feature">
+          <div class="icon-wrapper">
+            <img
+              src="https://cdn-icons-png.flaticon.com/128/11125/11125966.png"
+              alt="Quality Icon"
+            />
+          </div>
+          <h3>Quality</h3>
+          <p>Consistency</p>
         </div>
-        <div class="unique-card">
-          <img src="assets/productimages/fruitsandvegetables/tomato,onion,potato.png" alt="Tomato">
-          <p>Tomato, Onion, Potato</p>
+        <div class="feature">
+          <div class="icon-wrapper">
+            <img
+              src="https://cdn-icons-png.flaticon.com/128/17641/17641134.png"
+              alt="Single Vendor Icon"
+            />
+          </div>
+          <h3>Single Vendor</h3>
+          <p>Marketplace</p>
         </div>
-        <div class="unique-card">
-          <img src="assets/productimages/fruitsandvegetables/exoticvegetables.png" alt="Exotic Vegetables">
-          <p>Exotic Vegetables</p>
-        </div>
-        <div class="unique-card">
-          <img src="assets/productimages/fruitsandvegetables/leafyvegetables.png" alt="Leafy Vegetables">
-          <p>Leafy Vegetables</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-<section class="partners-section">
-  <div class="swiper-container">
-    <h2 class="partners-heading">Stories from Partners</h2>
-    <div class="swiper-wrapper">
-      <!-- Slide 1 -->
-      <div class="swiper-slide">
-        <div class="story">
-          <p>
-            Joshi Brothers is a Frozen Food Wholesaler in Junagadh. They have many products like Frozen French fries, cheese, butter, aloo tiki, frozen pizza, green peas, sweet corn, and all types of sauces, pasta, etc.
-          </p>
+        <div class="feature">
+          <div class="icon-wrapper">
+            <img
+              src="https://cdn-icons-png.flaticon.com/128/870/870181.png"
+              alt="Next Day Delivery Icon"
+            />
+          </div>
+          <h3>Next Day</h3>
+          <p>Delivery</p>
         </div>
       </div>
-      <!-- Slide 2 -->
-      <div class="swiper-slide">
-        <div class="story">
-          <p>
-            They are a wholesale distributor of food products like chili sauce, tomato sauce, pizza sauce, cheese, butter, and bakery products, etc.
-          </p>
+    </section>
+    <section id="popular-brands" class="popular-brands">
+      <h2>Choose from popular brands</h2>
+      <!-- <p>Over 250+ brands available</p> -->
+      <div class="brand-container">
+        <div class="brand-card" onclick="redirectToBrandPage('chingssecret')">
+          <img
+            src="assets/Brand Images/ching'ssecret.jpg"
+            alt="Ching's Secret"
+          />
+          <h3>Ching's Secret</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('everest')">
+          <img src="assets/Brand Images/everest.jpg" alt="Everest" />
+          <h3>Everest</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('farmking')">
+          <img src="assets/Brand Images/farmking.jpg" alt="Farm King" />
+          <h3>Farm King</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('funfoods')">
+          <img src="assets/Brand Images/funfoods.jpg" alt="Funfoods" />
+          <h3>Funfoods</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('gocheese')">
+          <img src="assets/Brand Images/gocheese.jpg" alt="Go Cheese" />
+          <h3>Go Cheese</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('goldencrown')">
+          <img src="assets/Brand Images/goldencrown.jpg" alt="Golden Crown" />
+          <h3>Golden Crown</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('hyfun')">
+          <img src="assets/Brand Images/hyfun.jpg" alt="Hyfun" />
+          <h3>Hyfun</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('indiadelights')">
+          <img
+            src="assets/Brand Images/indiadelights.jpg"
+            alt="Indie Delights"
+          />
+          <h3>Indie Delights</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('janaki')">
+          <img src="assets/Brand Images/janaki.jpg" alt="Janaki" />
+          <h3>Janaki</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('knorr')">
+          <img src="assets/Brand Images/knorr.jpg" alt="Knorr" />
+          <h3>Knorr</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('malas')">
+          <img src="assets/Brand Images/malas.jpg" alt="Malas" />
+          <h3>Malas</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('manama')">
+          <img src="assets/Brand Images/manama.jpg" alt="Manama" />
+          <h3>Manama</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('mdh')">
+          <img src="assets/Brand Images/mdh.jpg" alt="MDH" />
+          <h3>MDH</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('nestle')">
+          <img src="assets/Brand Images/mestle.jpg" alt="Nestle" />
+          <h3>Nestle</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('moonmoon')">
+          <img src="assets/Brand Images/moonmoon.jpg" alt="Moon Moon" />
+          <h3>Moon Moon</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('morde')">
+          <img src="assets/Brand Images/morde.jpg" alt="Morde" />
+          <h3>Morde</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('nutralite')">
+          <img src="assets/Brand Images/nutralite.jpg" alt="Nutralite" />
+          <h3>Nutralite</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('richs')">
+          <img src="assets/Brand Images/richs.jpg" alt="Rich's" />
+          <h3>Rich's</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('veeba')">
+          <img src="assets/Brand Images/veeba.jpg" alt="Veeba" />
+          <h3>Veeba</h3>
+        </div>
+        <div class="brand-card" onclick="redirectToBrandPage('weikfield')">
+          <img src="assets/Brand Images/weikfield.jpg" alt="Weikfield" />
+          <h3>Weikfield</h3>
         </div>
       </div>
-      <!-- Slide 3 -->
-      <div class="swiper-slide">
-        <div class="story">
-          <p>
-            I highly recommend Joshi Brothers for all your restaurant and FMCG Products needs in Junagadh.
-          </p>
+    </section>
+
+    <!-- Unique Category Section -->
+    <section id="unique-category">
+      <div id="unique-category-container">
+        <!-- Header -->
+        <div id="unique-category-header">
+          <h1>Buy just about anything</h1>
+          <p>20+ categories • 2000+ products</p>
+        </div>
+
+        <!-- Your Menu Add-ons -->
+        <div id="menu-addons-section">
+          <div class="section-title">
+            <h2>🧈Dairy</h2>
+            <a href="#" class="menu-addons-see-all">see all</a>
+          </div>
+          <div id="menu-addons-container">
+            <div class="unique-card">
+              <img src="assets/productimages/dairy/cream.png" alt="Brownies" />
+              <p>Cream</p>
+            </div>
+            <div class="unique-card">
+              <img
+                src="assets/productimages/dairy/milk-powder.png"
+                alt="Chutney"
+              />
+              <p>Milk Powder</p>
+            </div>
+            <div class="unique-card">
+              <img
+                src="assets/productimages/dairy/cheese.png"
+                alt="Frozen Snacks"
+              />
+              <p>Cheese</p>
+            </div>
+            <div class="unique-card">
+              <img
+                src="assets/productimages/dairy/butter.png"
+                alt="Burger Patties"
+              />
+              <p>Butter</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fruits & Vegetables -->
+        <div id="fruits-vegetables-section">
+          <div class="section-title">
+            <h2>🥦 Fruits & Vegetables</h2>
+            <a href="#" class="fruits-see-all">see all</a>
+          </div>
+          <div id="fruits-vegetables-container">
+            <div class="unique-card">
+              <img
+                src="assets/productimages/fruitsandvegetables/indianvegetables.png"
+                alt="Indian Vegetables"
+              />
+              <p>Indian Vegetables</p>
+            </div>
+            <div class="unique-card">
+              <img
+                src="assets/productimages/fruitsandvegetables/tomato,onion,potato.png"
+                alt="Tomato"
+              />
+              <p>Tomato, Onion, Potato</p>
+            </div>
+            <div class="unique-card">
+              <img
+                src="assets/productimages/fruitsandvegetables/exoticvegetables.png"
+                alt="Exotic Vegetables"
+              />
+              <p>Exotic Vegetables</p>
+            </div>
+            <div class="unique-card">
+              <img
+                src="assets/productimages/fruitsandvegetables/leafyvegetables.png"
+                alt="Leafy Vegetables"
+              />
+              <p>Leafy Vegetables</p>
+            </div>
+          </div>
         </div>
       </div>
-      <!-- Slide 4 -->
-      <div class="swiper-slide">
-        <div class="story">
-          <p>Wide range of goods available.</p>
+    </section>
+    <section class="partners-section">
+      <div class="swiper-container">
+        <h2 class="partners-heading">Stories from Partners</h2>
+        <div class="swiper-wrapper">
+          <!-- Slide 1 -->
+          <div class="swiper-slide">
+            <div class="story">
+              <p>
+                Joshi Brothers is a Frozen Food Wholesaler in Junagadh. They
+                have many products like Frozen French fries, cheese, butter,
+                aloo tiki, frozen pizza, green peas, sweet corn, and all types
+                of sauces, pasta, etc.
+              </p>
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="swiper-slide">
+            <div class="story">
+              <p>
+                They are a wholesale distributor of food products like chili
+                sauce, tomato sauce, pizza sauce, cheese, butter, and bakery
+                products, etc.
+              </p>
+            </div>
+          </div>
+          <!-- Slide 3 -->
+          <div class="swiper-slide">
+            <div class="story">
+              <p>
+                I highly recommend Joshi Brothers for all your restaurant and
+                FMCG Products needs in Junagadh.
+              </p>
+            </div>
+          </div>
+          <!-- Slide 4 -->
+          <div class="swiper-slide">
+            <div class="story">
+              <p>Wide range of goods available.</p>
+            </div>
+          </div>
         </div>
+
+        <!-- Navigation buttons -->
+        <!-- <div class="swiper-button-prev"></div> -->
+        <!-- <div class="swiper-button-next"></div> -->
+
+        <!-- Pagination -->
+        <!-- <div class="swiper-pagination"></div> -->
       </div>
-    </div>
+    </section>
 
-    <!-- Navigation buttons -->
-    <!-- <div class="swiper-button-prev"></div> -->
-    <!-- <div class="swiper-button-next"></div> -->
-
-    <!-- Pagination -->
-    <!-- <div class="swiper-pagination"></div> -->
-  </div>
-</section>
-
-  
     <footer>
-<div class="footer-content">
-<div class="company-info">
-<h4 class="footer-heading">Company</h4>
-<p style="color: #293142;">JOSHI BROTHERS</p>
-<p style="color: #767c8f; font-size: 14px;">5,Shrinathji Chembers, Danapith Junagadh, Gujarat - India</p>
-<!-- <p style="color: #767c8f;"">CIN: U74900DL2015PTC286208</p> -->
-<p>mananjoshi232@gmail.com</p>
-<!-- <p>Ra License No. 10020004002557</p> -->
-</div>
-<div class="quick-links">
-<h4 class="footer-heading">Quick Links</h4>
-<ul>
-<li><a href="#landing-section">Home</a></li>
-<li><a href="#">About Us</a></li>
-<li><a href="#">Contact</a></li>
-<li><a href="#popular-brands">Brands</a></li>
-<li><a href="#">Catagories</a></li>
-</ul>
-</div>
-<div class="social-links">
-<h4 class="footer-heading">Follow us on</h4>
-<ul>
-<li><a href="#">Linkedin</a></li>
-<li><a href="#">Youtube</a></li>
-</ul>
-</div>
-<div>
-    <img src="assets/logo.png" alt="Joshi Brothers Logo" class="footer-logo-image">
-</div>
-
-</div>
+      <div class="footer-content">
+        <div class="company-info">
+          <h4 class="footer-heading">Company</h4>
+          <p style="color: #293142">JOSHI BROTHERS</p>
+          <p style="color: #767c8f; font-size: 14px">
+            5,Shrinathji Chembers, Danapith Junagadh, Gujarat - India
+          </p>
+          <!-- <p style="color: #767c8f;"">CIN: U74900DL2015PTC286208</p> -->
+          <p>mananjoshi232@gmail.com</p>
+          <!-- <p>Ra License No. 10020004002557</p> -->
+        </div>
+        <div class="quick-links">
+          <h4 class="footer-heading">Quick Links</h4>
+          <ul>
+            <li><a href="#landing-section">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#popular-brands">Brands</a></li>
+            <li><a href="#unique-category">Catagories</a></li>
+          </ul>
+        </div>
+        <div class="social-links">
+          <h4 class="footer-heading">Follow us on</h4>
+          <ul>
+            <li><a href="#">Linkedin</a></li>
+            <li><a href="#">Youtube</a></li>
+          </ul>
+        </div>
+        <div>
+          <img
+            src="assets/logo.png"
+            alt="Joshi Brothers Logo"
+            class="footer-logo-image"
+          />
+        </div>
+      </div>
     </footer>
-<div class="copyright-section">
-    &copy; copyright 2024 JOSHI BROTHERS All Rights Reserved Designed by Vintrey Business
-</div>
-  <script>
-    // Function to toggle the mobile menu
-    function toggleMenu() {
-      const navLinks = document.querySelector('.nav-links');
-      navLinks.classList.toggle('active');
-    }
-
-     const swiper = new Swiper('.swiper-container', {
-  slidesPerView: 1,
-  spaceBetween: 10,
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-  pagination: {
-    el: '.swiper-pagination',
-    clickable: true,
-  },
-  autoplay: {
-    delay: 3000,
-    disableOnInteraction: false,
-  },
-  loop: true,
-  breakpoints: {
-    768: {
-      slidesPerView: 1,
-      spaceBetween: 10,
-    },
-    1024: {
-      slidesPerView: 2,
-      spaceBetween: 20,
-    },
-    1200: {
-      slidesPerView: 3,
-      spaceBetween: 30,
-    },
-  },
-});
-    // Function to close the menu if the user clicks outside of the navbar
-    function closeMenuIfClickedOutside(event) {
-      const navLinks = document.querySelector('.nav-links');
-      const hamburger = document.querySelector('.hamburger');
-      const isClickInsideNav = navLinks.contains(event.target) || hamburger.contains(event.target);
-
-      // If the click is outside the nav and the menu is open, close it
-      if (!isClickInsideNav && navLinks.classList.contains('active')) {
-        navLinks.classList.remove('active');
+    <div class="copyright-section">
+      &copy; copyright 2024 JOSHI BROTHERS All Rights Reserved Designed by
+      Vintrey Business
+    </div>
+    <script>
+      // Function to toggle the mobile menu
+      function toggleMenu() {
+        const navLinks = document.querySelector(".nav-links");
+        navLinks.classList.toggle("active");
       }
-    }
 
-    function redirectToBrandPage(brandName) {
-  // Convert brand name to lowercase and replace spaces with hyphens if necessary
-  // This will make the URL clean like /brands/chingssecret
-  const formattedBrandName = brandName.toLowerCase().replace(/\s+/g, '-');
+      const swiper = new Swiper(".swiper-container", {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+        loop: true,
+        breakpoints: {
+          768: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+          },
+          1024: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          1200: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+          },
+        },
+      });
+      // Function to close the menu if the user clicks outside of the navbar
+      function closeMenuIfClickedOutside(event) {
+        const navLinks = document.querySelector(".nav-links");
+        const hamburger = document.querySelector(".hamburger");
+        const isClickInsideNav =
+          navLinks.contains(event.target) || hamburger.contains(event.target);
 
-  // Redirect to the brand's specific page
-  window.location.href = `brands/${formattedBrandName}.html`; 
-}
+        // If the click is outside the nav and the menu is open, close it
+        if (!isClickInsideNav && navLinks.classList.contains("active")) {
+          navLinks.classList.remove("active");
+        }
+      }
 
-// window.addEventListener('scroll',()=>{
-        
-//         if(window.scrollY >700){
-//             header.classList.add("scrolled")
-//         }else{
-//             header.classList.remove("scrolled")
-//         }
-//     })
-    // Add event listener to the document for clicks outside the navbar
-    document.addEventListener('click', closeMenuIfClickedOutside);
+      function redirectToBrandPage(brandName) {
+        // Convert brand name to lowercase and replace spaces with hyphens if necessary
+        // This will make the URL clean like /brands/chingssecret
+        const formattedBrandName = brandName.toLowerCase().replace(/\s+/g, "-");
 
-    // Close the menu when the search input is focused
-    // document.querySelector('.search-bar').addEventListener('focus', function() {
-    //   const navLinks = document.querySelector('.nav-links');
-    //   if (navLinks.classList.contains('active')) {
-    //     navLinks.classList.remove('active');
-    //   }
-    // });
-  </script>
+        // Redirect to the brand's specific page
+        window.location.href = `brands/${formattedBrandName}.html`;
+      }
 
-</body>
+      // window.addEventListener('scroll',()=>{
+
+      //         if(window.scrollY >700){
+      //             header.classList.add("scrolled")
+      //         }else{
+      //             header.classList.remove("scrolled")
+      //         }
+      //     })
+      // Add event listener to the document for clicks outside the navbar
+      document.addEventListener("click", closeMenuIfClickedOutside);
+
+      // Close the menu when the search input is focused
+      // document.querySelector('.search-bar').addEventListener('focus', function() {
+      //   const navLinks = document.querySelector('.nav-links');
+      //   if (navLinks.classList.contains('active')) {
+      //     navLinks.classList.remove('active');
+      //   }
+      // });
+    </script>
+  </body>
 </html>
