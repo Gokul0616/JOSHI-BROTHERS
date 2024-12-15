@@ -543,8 +543,13 @@ body {
   display: flex;
   overflow-x: auto;
   gap: 30px;
+   -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+  scrollbar-width: none;
   justify-content: flex-start;
   padding-bottom: 20px;
+}
+.brand-container::-webkit-scrollbar {
+  display: none;  /* For Chrome, Safari, and Opera */
 }
 
 .brand-card {
@@ -707,8 +712,14 @@ body {
     overflow-x: auto; /* Enable horizontal scrolling */
     gap: 20px;
     padding-bottom: 20px; /* To prevent content being cut off */
+     -ms-overflow-style: none;  
+  scrollbar-width: none; 
   }
 
+    /* #menu-addons-container,
+  #fruits-vegetables-container::-webkit-scrollbar {
+    display: none; 
+  } */
   .unique-card {
     flex-shrink: 0; /* Prevent the card from shrinking */
     width: 180px; /* Fixed width */
