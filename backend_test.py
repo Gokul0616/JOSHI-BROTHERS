@@ -25,6 +25,10 @@ user_id = None
 product_id = None
 cart_item_id = None
 order_id = None
+admin_token = None
+created_product_id = None
+created_category_id = None
+created_brand_id = None
 
 # ANSI colors for output
 class Colors:
