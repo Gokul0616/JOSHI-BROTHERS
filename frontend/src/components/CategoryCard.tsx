@@ -14,11 +14,20 @@ interface CategoryCardProps {
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ category }) => {
   return (
-    <Link to={`/products?category=${encodeURIComponent(category.name)}`}>
-      <div className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 text-center category-card">
-        <div className="text-4xl mb-4">{category.icon}</div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">{category.name}</h3>
-        <p className="text-gray-600 text-sm">{category.description}</p>
+    <Link 
+      to={`/products?category=${encodeURIComponent(category.name)}`}
+      className="group"
+    >
+      <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border border-gray-100 group-hover:border-green-200">
+        <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-200">
+          {category.icon}
+        </div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-green-600 transition-colors">
+          {category.name}
+        </h3>
+        <p className="text-gray-600 text-sm">
+          {category.description}
+        </p>
       </div>
     </Link>
   );

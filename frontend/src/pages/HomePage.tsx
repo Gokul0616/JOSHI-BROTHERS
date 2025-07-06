@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { ShoppingCart, Star, Truck, Shield, Clock, Users } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import CategoryCard from '../components/CategoryCard';
 import BrandCard from '../components/BrandCard';
-import { ArrowRight, CheckCircle, Truck, Users } from 'lucide-react';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
 interface Product {
   id: string;
   name: string;
   description: string;
   price: number;
+  category: string;
+  brand: string;
   image_url: string;
-  unit: string;
   stock: number;
+  unit: string;
 }
 
 interface Category {
@@ -35,172 +38,238 @@ const HomePage: React.FC = () => {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [productsRes, categoriesRes, brandsRes] = await Promise.all([
-          axios.get(`${API_URL}/api/products`),
-          axios.get(`${API_URL}/api/categories`),
-          axios.get(`${API_URL}/api/brands`)
-        ]);
-
-        setFeaturedProducts(productsRes.data.products.slice(0, 8));
-        setCategories(categoriesRes.data.categories);
-        setBrands(brandsRes.data.brands.slice(0, 6));
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600"></div>
-      </div>
-    );
-  }
+  const fetchData = async () => {
+    try {
+      const [productsRes, categoriesRes, brandsRes] = await Promise.all([
+        fetch(`${BACKEND_URL}/api/products`),
+        fetch(`${BACKEND_URL}/api/categories`),
+        fetch(`${BACKEND_URL}/api/brands`)
+      ]);
+
+      const productsData = await productsRes.json();
+      const categoriesData = await categoriesRes.json();
+      const brandsData = await brandsRes.json();
+
+      setFeaturedProducts(productsData.products?.slice(0, 8) || []);
+      setCategories(categoriesData.categories || []);
+      setBrands(brandsData.brands || []);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="hero-section text-white py-32">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-xl md:text-2xl font-medium mb-4">
-            20+ categories • 2000+ products
-          </h2>
-          <h1 className="text-4xl md:text-6xl font-bold mb-8">
-            All your restaurant needs delivered next day
-          </h1>
-          <Link
-            to="/products"
-            className="bg-red-600 text-white px-8 py-4 rounded-md text-lg font-semibold hover:bg-red-700 transition-colors inline-flex items-center space-x-2"
-          >
-            <span>Shop Now</span>
-            <ArrowRight className="w-5 h-5" />
-          </Link>
+      <section className="relative bg-gradient-to-r from-green-600 to-green-800 text-white py-20">
+        <div className="absolute inset-0 bg-black opacity-30"></div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1611573479036-872a262ad2a5?w=1920&h=800&fit=crop')`
+          }}
+        ></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              Fresh Supplies for
+              <span className="block text-green-300">Your Restaurant</span>
+            </h1>
+            <p className="text-xl mb-8 max-w-2xl mx-auto">
+              Quality ingredients, timely delivery, and competitive prices for restaurants across the city
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/products"
+                className="bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+              >
+                Shop Now
+              </Link>
+              <Link
+                to="/register"
+                className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-green-600 transition-colors"
+              >
+                Join as Partner
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            Why choose JOSHI BROTHERS?
-          </h2>
+      {/* Features Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose Hyperpure?</h2>
+            <p className="text-gray-600 text-lg">Trusted by thousands of restaurants nationwide</p>
+          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="w-8 h-8 text-blue-600" />
+              <div className="bg-green-100 rounded-full p-4 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                <Truck className="w-8 h-8 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Quality</h3>
-              <p className="text-gray-600">Consistency</p>
+              <h3 className="text-xl font-semibold mb-2">Fast Delivery</h3>
+              <p className="text-gray-600">Same-day delivery for orders placed before 2 PM</p>
             </div>
+            
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-green-100 rounded-full p-4 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                <Shield className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Quality Assured</h3>
+              <p className="text-gray-600">Premium quality products from trusted suppliers</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="bg-green-100 rounded-full p-4 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
                 <Users className="w-8 h-8 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Single Vendor</h3>
-              <p className="text-gray-600">Marketplace</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Truck className="w-8 h-8 text-orange-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Next Day</h3>
-              <p className="text-gray-600">Delivery</p>
+              <h3 className="text-xl font-semibold mb-2">Dedicated Support</h3>
+              <p className="text-gray-600">24/7 customer support for all your needs</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Categories Section */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Shop by Category</h2>
+            <p className="text-gray-600 text-lg">Everything you need for your restaurant</p>
+          </div>
+          
+          {loading ? (
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+              {[...Array(10)].map((_, i) => (
+                <div key={i} className="bg-gray-200 rounded-lg h-32 animate-pulse"></div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+              {categories.map((category) => (
+                <CategoryCard key={category.id} category={category} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Featured Products */}
       <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800">Featured Products</h2>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Featured Products</h2>
+            <p className="text-gray-600 text-lg">Handpicked favorites from our catalog</p>
+          </div>
+          
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="bg-white rounded-lg p-4 shadow-sm">
+                  <div className="bg-gray-200 rounded-lg h-48 mb-4 animate-pulse"></div>
+                  <div className="space-y-2">
+                    <div className="bg-gray-200 h-4 rounded animate-pulse"></div>
+                    <div className="bg-gray-200 h-4 rounded animate-pulse"></div>
+                    <div className="bg-gray-200 h-6 rounded animate-pulse"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {featuredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
+          
+          <div className="text-center mt-12">
             <Link
               to="/products"
-              className="text-red-600 hover:text-red-700 font-semibold flex items-center space-x-1"
+              className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
             >
-              <span>See All</span>
-              <ArrowRight className="w-4 h-4" />
+              View All Products
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+        </div>
+      </section>
+
+      {/* Popular Brands */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Popular Brands</h2>
+            <p className="text-gray-600 text-lg">Trusted brands for your business</p>
+          </div>
+          
+          {loading ? (
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="bg-gray-200 rounded-lg h-24 animate-pulse"></div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+              {brands.slice(0, 6).map((brand) => (
+                <BrandCard key={brand.id} brand={brand} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Statistics Section */}
+      <section className="py-16 bg-green-600 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+            <div>
+              <div className="text-4xl font-bold mb-2">10K+</div>
+              <div className="text-green-100">Happy Restaurants</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold mb-2">500+</div>
+              <div className="text-green-100">Premium Products</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold mb-2">50+</div>
+              <div className="text-green-100">Trusted Brands</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold mb-2">24/7</div>
+              <div className="text-green-100">Customer Support</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Categories */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            Buy just about anything
-          </h2>
-          <p className="text-center text-gray-600 mb-12">20+ categories • 2000+ products</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.map((category) => (
-              <CategoryCard key={category.id} category={category} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Brands */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            Choose from popular brands
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-            {brands.map((brand) => (
-              <BrandCard key={brand.id} brand={brand} />
-            ))}
-          </div>
-          <div className="text-center mt-8">
+      {/* CTA Section */}
+      <section className="py-16 bg-gray-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
+          <p className="text-xl text-gray-300 mb-8">
+            Join thousands of restaurants who trust Hyperpure for their supply needs
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/brands"
-              className="text-red-600 hover:text-red-700 font-semibold flex items-center justify-center space-x-1"
+              to="/register"
+              className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
             >
-              <span>View All Brands</span>
-              <ArrowRight className="w-4 h-4" />
+              Start Your Journey
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            Stories from Partners
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <p className="text-gray-700 mb-4">
-                "Joshi Brothers is a Frozen Food Wholesaler in Junagadh. They have many products like Frozen French fries, cheese, butter, aloo tiki, frozen pizza, green peas, sweet corn, and all types of sauces, pasta, etc."
-              </p>
-            </div>
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <p className="text-gray-700 mb-4">
-                "They are a wholesale distributor of food products like chili sauce, tomato sauce, pizza sauce, cheese, butter, and bakery products, etc."
-              </p>
-            </div>
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <p className="text-gray-700 mb-4">
-                "I highly recommend Joshi Brothers for all your restaurant and FMCG Products needs in Junagadh. Wide range of goods available."
-              </p>
-            </div>
+            <Link
+              to="/products"
+              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-colors"
+            >
+              Browse Products
+            </Link>
           </div>
         </div>
       </section>
