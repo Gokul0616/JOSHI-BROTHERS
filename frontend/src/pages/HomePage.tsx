@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Star, Truck, Shield, Clock, Users } from 'lucide-react';
+import { Truck, Shield, Users } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import CategoryCard from '../components/CategoryCard';
 import BrandCard from '../components/BrandCard';
