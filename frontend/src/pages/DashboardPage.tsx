@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Package, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
 interface Order {
   id: string;
@@ -21,56 +22,44 @@ interface Order {
 }
 
 const DashboardPage: React.FC = () => {
-  const { user, isAuthenticated } = useAuth();
-  const [searchParams] = useSearchParams();
+  const { user, token } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-
-  const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
   useEffect(() => {
-    if (searchParams.get('order_success') === 'true') {
-      setShowSuccessMessage(true);
-      setTimeout(() => setShowSuccessMessage(false), 5000);
+    if (token) {
+      fetchOrders();
     }
-  }, [searchParams]);
+  }, [token]);
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      if (!isAuthenticated) return;
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${BACKEND_URL}/api/orders`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
 
-      try {
-        const response = await axios.get(`${API_URL}/api/orders`);
-        setOrders(response.data.orders);
-      } catch (error) {
-        console.error('Failed to fetch orders:', error);
-      } finally {
-        setLoading(false);
+      if (response.ok) {
+        const data = await response.json();
+        setOrders(data.orders || []);
       }
-    };
-
-    fetchOrders();
-  }, [isAuthenticated]);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">Please login to view your dashboard</h2>
-        </div>
-      </div>
-    );
-  }
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getStatusIcon = (status: string) => {
-    switch (status) {
+    switch (status.toLowerCase()) {
       case 'pending':
         return <Clock className="w-5 h-5 text-yellow-500" />;
-      case 'confirmed':
-        return <CheckCircle className="w-5 h-5 text-green-500" />;
-      case 'delivered':
+      case 'processing':
         return <Package className="w-5 h-5 text-blue-500" />;
+      case 'delivered':
+        return <CheckCircle className="w-5 h-5 text-green-500" />;
       case 'cancelled':
         return <XCircle className="w-5 h-5 text-red-500" />;
       default:
@@ -79,13 +68,13 @@ const DashboardPage: React.FC = () => {
   };
 
   const getStatusColor = (status: string) => {
-    switch (status) {
+    switch (status.toLowerCase()) {
       case 'pending':
         return 'bg-yellow-100 text-yellow-800';
-      case 'confirmed':
-        return 'bg-green-100 text-green-800';
-      case 'delivered':
+      case 'processing':
         return 'bg-blue-100 text-blue-800';
+      case 'delivered':
+        return 'bg-green-100 text-green-800';
       case 'cancelled':
         return 'bg-red-100 text-red-800';
       default:
@@ -93,88 +82,152 @@ const DashboardPage: React.FC = () => {
     }
   };
 
-  if (loading) {
+  if (!user) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600"></div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Please sign in</h2>
+          <p className="text-gray-600 mb-6">You need to be logged in to view your dashboard</p>
+          <Link
+            to="/login"
+            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
+          >
+            Sign In
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4">
-        {/* Success Message */}
-        {showSuccessMessage && (
-          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6">
-            <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 mr-2" />
-              <span>Order placed successfully! We'll process it shortly.</span>
-            </div>
-          </div>
-        )}
-
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
-          <p className="text-gray-600 mt-2">Welcome back, {user?.name}!</p>
+          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <p className="text-gray-600 mt-2">Welcome back, {user.name}!</p>
+        </div>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center">
+              <div className="p-3 bg-blue-500 rounded-full">
+                <Package className="w-6 h-6 text-white" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Total Orders</p>
+                <p className="text-2xl font-bold text-gray-900">{orders.length}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center">
+              <div className="p-3 bg-yellow-500 rounded-full">
+                <Clock className="w-6 h-6 text-white" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Pending</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {orders.filter(o => o.status === 'pending').length}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center">
+              <div className="p-3 bg-green-500 rounded-full">
+                <CheckCircle className="w-6 h-6 text-white" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Delivered</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {orders.filter(o => o.status === 'delivered').length}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center">
+              <div className="p-3 bg-purple-500 rounded-full">
+                <span className="text-white font-bold">₹</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Total Spent</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  ₹{orders.reduce((sum, order) => sum + order.total_amount, 0).toFixed(2)}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Orders Section */}
         <div className="bg-white rounded-lg shadow-sm">
           <div className="p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-800 flex items-center">
-              <Package className="w-5 h-5 mr-2 text-red-600" />
-              Your Orders
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-900">Recent Orders</h2>
           </div>
 
-          {orders.length === 0 ? (
-            <div className="p-6 text-center">
-              <Package className="mx-auto h-16 w-16 text-gray-400 mb-4" />
-              <h3 className="text-lg font-medium text-gray-700 mb-2">No orders yet</h3>
-              <p className="text-gray-500">Start shopping to see your orders here</p>
+          {loading ? (
+            <div className="p-6">
+              <div className="animate-pulse space-y-4">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="border rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="bg-gray-200 h-4 w-32 rounded"></div>
+                      <div className="bg-gray-200 h-6 w-20 rounded"></div>
+                    </div>
+                    <div className="bg-gray-200 h-4 w-full rounded"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : orders.length === 0 ? (
+            <div className="p-12 text-center">
+              <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No orders yet</h3>
+              <p className="text-gray-600 mb-6">Start shopping to see your orders here</p>
+              <Link
+                to="/products"
+                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
+              >
+                Start Shopping
+              </Link>
             </div>
           ) : (
             <div className="divide-y divide-gray-200">
               {orders.map((order) => (
                 <div key={order.id} className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-3">
-                      {getStatusIcon(order.status)}
-                      <div>
-                        <h3 className="font-semibold text-gray-800">
-                          Order #{order.id.substring(0, 8)}
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          {new Date(order.order_date).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
-                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                      </div>
-                      <p className="text-lg font-semibold text-gray-800 mt-1">
-                        ₹{order.total_amount.toFixed(2)}
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        Order #{order.id.slice(0, 8)}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {new Date(order.order_date).toLocaleDateString()}
                       </p>
                     </div>
-                  </div>
-
-                  <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                    <h4 className="font-medium text-gray-700 mb-2">Items:</h4>
-                    <div className="space-y-1">
-                      {order.items.map((item, index) => (
-                        <div key={index} className="flex justify-between text-sm">
-                          <span>{item.product_name} x {item.quantity}</span>
-                          <span>₹{item.total.toFixed(2)}</span>
-                        </div>
-                      ))}
+                    <div className="flex items-center space-x-4">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                        {getStatusIcon(order.status)}
+                        <span className="ml-1 capitalize">{order.status}</span>
+                      </span>
+                      <span className="text-lg font-bold text-gray-900">
+                        ₹{order.total_amount.toFixed(2)}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="text-sm text-gray-600">
-                    <strong>Delivery Address:</strong> {order.delivery_address}
+                  <div className="space-y-2">
+                    <p className="text-sm text-gray-600">
+                      <strong>Items:</strong> {order.items.map(item => `${item.product_name} (${item.quantity})`).join(', ')}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <strong>Delivery Address:</strong> {order.delivery_address}
+                    </p>
                   </div>
                 </div>
               ))}
