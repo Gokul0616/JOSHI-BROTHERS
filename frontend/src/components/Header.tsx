@@ -8,8 +8,8 @@ const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const { user, logout } = useContext(AuthContext);
-  const { cartItems } = useContext(CartContext);
+  const { user, logout } = useAuth();
+  const { cartItems } = useCart();
   const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
