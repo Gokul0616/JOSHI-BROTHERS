@@ -33,8 +33,7 @@
 }
 
 .hero-section {
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.9), rgba(153, 27, 27, 0.9)),
-    url('/assets/desktop-image.jpg') center/cover;
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.9), rgba(153, 27, 27, 0.9));
   min-height: 500px;
 }
 
