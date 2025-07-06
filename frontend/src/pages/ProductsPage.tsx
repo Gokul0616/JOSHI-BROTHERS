@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import { Filter, Grid, List } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
-import { Filter, Search } from 'lucide-react';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
 interface Product {
   id: string;
   name: string;
   description: string;
   price: number;
-  image_url: string;
-  unit: string;
-  stock: number;
   category: string;
   brand: string;
+  image_url: string;
+  stock: number;
+  unit: string;
 }
 
 interface Category {
@@ -30,129 +31,122 @@ interface Brand {
 }
 
 const ProductsPage: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
-  const [selectedBrand, setSelectedBrand] = useState(searchParams.get('brand') || '');
-  const [showFilters, setShowFilters] = useState(false);
-
-  const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedBrand, setSelectedBrand] = useState<string>('');
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [categoriesRes, brandsRes] = await Promise.all([
-          axios.get(`${API_URL}/api/categories`),
-          axios.get(`${API_URL}/api/brands`)
-        ]);
-
-        setCategories(categoriesRes.data.categories);
-        setBrands(brandsRes.data.brands);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-      }
-    };
-
     fetchData();
-  }, []);
+    // Set initial filters from URL params
+    const category = searchParams.get('category');
+    const brand = searchParams.get('brand');
+    if (category) setSelectedCategory(category);
+    if (brand) setSelectedBrand(brand);
+  }, [searchParams]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        const params = new URLSearchParams();
-        if (selectedCategory) params.append('category', selectedCategory);
-        if (selectedBrand) params.append('brand', selectedBrand);
-
-        const response = await axios.get(`${API_URL}/api/products?${params}`);
-        setProducts(response.data.products);
-      } catch (error) {
-        console.error('Failed to fetch products:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProducts();
   }, [selectedCategory, selectedBrand]);
 
+  const fetchData = async () => {
+    try {
+      const [categoriesRes, brandsRes] = await Promise.all([
+        fetch(`${BACKEND_URL}/api/categories`),
+        fetch(`${BACKEND_URL}/api/brands`)
+      ]);
+
+      const categoriesData = await categoriesRes.json();
+      const brandsData = await brandsRes.json();
+
+      setCategories(categoriesData.categories || []);
+      setBrands(brandsData.brands || []);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      let url = `${BACKEND_URL}/api/products`;
+      const params = new URLSearchParams();
+      
+      if (selectedCategory) params.append('category', selectedCategory);
+      if (selectedBrand) params.append('brand', selectedBrand);
+      
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+
+      const response = await fetch(url);
+      const data = await response.json();
+      setProducts(data.products || []);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
-    const params = new URLSearchParams(searchParams);
-    if (category) {
-      params.set('category', category);
-    } else {
-      params.delete('category');
-    }
-    setSearchParams(params);
+    updateUrlParams({ category, brand: selectedBrand });
   };
 
   const handleBrandChange = (brand: string) => {
     setSelectedBrand(brand);
-    const params = new URLSearchParams(searchParams);
-    if (brand) {
-      params.set('brand', brand);
-    } else {
-      params.delete('brand');
-    }
-    setSearchParams(params);
+    updateUrlParams({ category: selectedCategory, brand });
   };
 
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const updateUrlParams = (params: { category: string; brand: string }) => {
+    const newSearchParams = new URLSearchParams();
+    if (params.category) newSearchParams.set('category', params.category);
+    if (params.brand) newSearchParams.set('brand', params.brand);
+    setSearchParams(newSearchParams);
+  };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600"></div>
-      </div>
-    );
-  }
+  const clearFilters = () => {
+    setSelectedCategory('');
+    setSelectedBrand('');
+    setSearchParams(new URLSearchParams());
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">Products</h1>
-          
-          {/* Search Bar */}
-          <div className="relative mb-4">
-            <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Products</h1>
+            <p className="text-gray-600 mt-2">
+              {products.length} product{products.length !== 1 ? 's' : ''} found
+            </p>
           </div>
-
-          {/* Filter Toggle Button (Mobile) */}
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="lg:hidden flex items-center space-x-2 bg-white px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50"
-          >
-            <Filter className="w-5 h-5" />
-            <span>Filters</span>
-          </button>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="lg:grid lg:grid-cols-4 lg:gap-8">
           {/* Filters Sidebar */}
-          <div className={`lg:w-1/4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-semibold mb-4">Filters</h3>
-              
-              {/* Category Filter */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">Filters</h3>
+                {(selectedCategory || selectedBrand) && (
+                  <button
+                    onClick={clearFilters}
+                    className="text-sm text-green-600 hover:text-green-700"
+                  >
+                    Clear all
+                  </button>
+                )}
+              </div>
+
+              {/* Categories */}
               <div className="mb-6">
-                <h4 className="font-medium text-gray-700 mb-3">Category</h4>
+                <h4 className="text-md font-medium text-gray-700 mb-3">Categories</h4>
                 <div className="space-y-2">
                   <label className="flex items-center">
                     <input
@@ -160,10 +154,10 @@ const ProductsPage: React.FC = () => {
                       name="category"
                       value=""
                       checked={selectedCategory === ''}
-                      onChange={() => handleCategoryChange('')}
-                      className="mr-2"
+                      onChange={(e) => handleCategoryChange(e.target.value)}
+                      className="text-green-600 focus:ring-green-500"
                     />
-                    <span className="text-sm">All Categories</span>
+                    <span className="ml-2 text-sm text-gray-600">All Categories</span>
                   </label>
                   {categories.map((category) => (
                     <label key={category.id} className="flex items-center">
@@ -172,18 +166,20 @@ const ProductsPage: React.FC = () => {
                         name="category"
                         value={category.name}
                         checked={selectedCategory === category.name}
-                        onChange={() => handleCategoryChange(category.name)}
-                        className="mr-2"
+                        onChange={(e) => handleCategoryChange(e.target.value)}
+                        className="text-green-600 focus:ring-green-500"
                       />
-                      <span className="text-sm">{category.icon} {category.name}</span>
+                      <span className="ml-2 text-sm text-gray-600">
+                        {category.icon} {category.name}
+                      </span>
                     </label>
                   ))}
                 </div>
               </div>
 
-              {/* Brand Filter */}
-              <div className="mb-6">
-                <h4 className="font-medium text-gray-700 mb-3">Brand</h4>
+              {/* Brands */}
+              <div>
+                <h4 className="text-md font-medium text-gray-700 mb-3">Brands</h4>
                 <div className="space-y-2">
                   <label className="flex items-center">
                     <input
@@ -191,10 +187,10 @@ const ProductsPage: React.FC = () => {
                       name="brand"
                       value=""
                       checked={selectedBrand === ''}
-                      onChange={() => handleBrandChange('')}
-                      className="mr-2"
+                      onChange={(e) => handleBrandChange(e.target.value)}
+                      className="text-green-600 focus:ring-green-500"
                     />
-                    <span className="text-sm">All Brands</span>
+                    <span className="ml-2 text-sm text-gray-600">All Brands</span>
                   </label>
                   {brands.map((brand) => (
                     <label key={brand.id} className="flex items-center">
@@ -203,47 +199,50 @@ const ProductsPage: React.FC = () => {
                         name="brand"
                         value={brand.name}
                         checked={selectedBrand === brand.name}
-                        onChange={() => handleBrandChange(brand.name)}
-                        className="mr-2"
+                        onChange={(e) => handleBrandChange(e.target.value)}
+                        className="text-green-600 focus:ring-green-500"
                       />
-                      <span className="text-sm">{brand.name}</span>
+                      <span className="ml-2 text-sm text-gray-600">{brand.name}</span>
                     </label>
                   ))}
                 </div>
               </div>
-
-              {/* Clear Filters */}
-              <button
-                onClick={() => {
-                  setSelectedCategory('');
-                  setSelectedBrand('');
-                  setSearchTerm('');
-                  setSearchParams({});
-                }}
-                className="w-full bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                Clear Filters
-              </button>
             </div>
           </div>
 
           {/* Products Grid */}
-          <div className="lg:w-3/4">
-            <div className="mb-4 flex justify-between items-center">
-              <p className="text-gray-600">
-                Showing {filteredProducts.length} products
-              </p>
-            </div>
-
-            {filteredProducts.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">No products found matching your criteria.</p>
-              </div>
-            ) : (
+          <div className="lg:col-span-3">
+            {loading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProducts.map((product) => (
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="bg-white rounded-lg p-4 shadow-sm">
+                    <div className="bg-gray-200 rounded-lg h-48 mb-4 animate-pulse"></div>
+                    <div className="space-y-2">
+                      <div className="bg-gray-200 h-4 rounded animate-pulse"></div>
+                      <div className="bg-gray-200 h-4 rounded animate-pulse"></div>
+                      <div className="bg-gray-200 h-6 rounded animate-pulse"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : products.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {products.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="text-gray-500 text-lg mb-4">No products found</div>
+                <p className="text-gray-400">Try adjusting your filters or search terms</p>
+                {(selectedCategory || selectedBrand) && (
+                  <button
+                    onClick={clearFilters}
+                    className="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
+                  >
+                    Clear filters
+                  </button>
+                )}
               </div>
             )}
           </div>
