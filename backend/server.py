@@ -146,20 +146,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount admin templates directory
-try:
-    os.makedirs("admin_templates", exist_ok=True)
-    templates = Jinja2Templates(directory="admin_templates")
-except Exception as e:
-    print(f"Template directory error: {e}")
-
 # Admin Panel Route
 @app.get("/admin", response_class=HTMLResponse)
 @app.get("/admin/", response_class=HTMLResponse)
 @app.get("/admin/{path:path}", response_class=HTMLResponse)
 async def admin_panel(request: Request, path: str = ""):
     try:
-        return templates.TemplateResponse("index.html", {"request": request})
+        with open("admin_templates/index.html", "r") as f:
+            content = f.read()
+        return HTMLResponse(content=content)
     except Exception as e:
         return HTMLResponse(content=f"<h1>Admin Panel Loading...</h1><p>Error: {str(e)}</p>", status_code=500)
 
