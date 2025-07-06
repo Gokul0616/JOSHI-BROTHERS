@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joshi Brothers - Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .sidebar.closed {
+            transform: translateX(-100%);
+        }
+        
+        @media (min-width: 768px) {
+            .sidebar.closed {
+                transform: translateX(0);
+            }
+        }
+        
+        .content-area {
+            transition: margin-left 0.3s ease-in-out;
+        }
+        
+        .modal {
+            display: none;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-bold text-gray-800">Admin Login</h2>
+                <p class="text-gray-600 mt-2">JOSHI BROTHERS Admin Panel</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="mb-4">
+                    <input type="email" id="adminEmail" placeholder="Admin Email" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+                <div class="mb-6">
+                    <input type="password" id="adminPassword" placeholder="Password" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+                <button type="submit" class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors">
+                    Login
+                </button>
+            </form>
+            
+            <div id="loginError" class="text-red-600 text-sm mt-4 hidden"></div>
+        </div>
+    </div>
+
+    <!-- Main Admin Panel -->
+    <div id="adminPanel" class="hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-md">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center">
+                    <button id="sidebarToggle" class="md:hidden mr-4 text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h1 class="text-2xl font-bold text-gray-800">
+                        <span class="text-red-600">JOSHI</span> BROTHERS - Admin Panel
+                    </h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="adminName" class="text-gray-700"></span>
+                    <button id="logoutBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex">
+            <!-- Sidebar -->
+            <aside id="sidebar" class="sidebar bg-gray-800 text-white w-64 min-h-screen fixed md:relative z-40">
+                <nav class="mt-8">
+                    <a href="#" onclick="showDashboard()" class="nav-link block px-6 py-3 hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
+                    </a>
+                    <a href="#" onclick="showProducts()" class="nav-link block px-6 py-3 hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-box mr-3"></i>Products
+                    </a>
+                    <a href="#" onclick="showCategories()" class="nav-link block px-6 py-3 hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-tags mr-3"></i>Categories
+                    </a>
+                    <a href="#" onclick="showBrands()" class="nav-link block px-6 py-3 hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-star mr-3"></i>Brands
+                    </a>
+                    <a href="#" onclick="showOrders()" class="nav-link block px-6 py-3 hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-shopping-cart mr-3"></i>Orders
+                    </a>
+                    <a href="#" onclick="showUsers()" class="nav-link block px-6 py-3 hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-users mr-3"></i>Users
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main id="mainContent" class="content-area flex-1 p-6 md:ml-0">
+                <!-- Dashboard Content -->
+                <div id="dashboardContent" class="content-section">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Dashboard</h2>
+                    
+                    <!-- Statistics Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-box text-blue-600 text-2xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-gray-600">Products</p>
+                                    <p id="totalProducts" class="text-2xl font-bold text-gray-800">0</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-tags text-green-600 text-2xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-gray-600">Categories</p>
+                                    <p id="totalCategories" class="text-2xl font-bold text-gray-800">0</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-star text-yellow-600 text-2xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-gray-600">Brands</p>
+                                    <p id="totalBrands" class="text-2xl font-bold text-gray-800">0</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-users text-purple-600 text-2xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-gray-600">Users</p>
+                                    <p id="totalUsers" class="text-2xl font-bold text-gray-800">0</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-shopping-cart text-red-600 text-2xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-gray-600">Orders</p>
+                                    <p id="totalOrders" class="text-2xl font-bold text-gray-800">0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Orders -->
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">Recent Orders</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentOrdersTable" class="bg-white divide-y divide-gray-200">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Content -->
+                <div id="productsContent" class="content-section hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800">Products</h2>
+                        <button onclick="showAddProductModal()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                            <i class="fas fa-plus mr-2"></i>Add Product
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Brand</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productsTable" class="bg-white divide-y divide-gray-200">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other content sections will be added dynamically -->
+                <div id="categoriesContent" class="content-section hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Categories</h2>
+                    <!-- Categories content will be implemented -->
+                </div>
+
+                <div id="brandsContent" class="content-section hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Brands</h2>
+                    <!-- Brands content will be implemented -->
+                </div>
+
+                <div id="ordersContent" class="content-section hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Orders</h2>
+                    <!-- Orders content will be implemented -->
+                </div>
+
+                <div id="usersContent" class="content-section hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Users</h2>
+                    <!-- Users content will be implemented -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Overlay for mobile sidebar -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden"></div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
