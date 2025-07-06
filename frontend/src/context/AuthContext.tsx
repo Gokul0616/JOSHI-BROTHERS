@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
@@ -25,6 +25,15 @@ export const AuthContext = createContext<AuthContextType>({
   logout: () => {},
   loading: true,
 });
+
+// Custom hook to use auth context
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
 
 interface AuthProviderProps {
   children: ReactNode;

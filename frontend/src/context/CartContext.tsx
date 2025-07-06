@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
-import { AuthContext } from './AuthContext';
+import { useAuth } from './AuthContext';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
@@ -39,6 +39,15 @@ export const CartContext = createContext<CartContextType>({
   fetchCart: async () => {},
 });
 
+// Custom hook to use cart context
+export const useCart = () => {
+  const context = useContext(CartContext);
+  if (context === undefined) {
+    throw new Error('useCart must be used within a CartProvider');
+  }
+  return context;
+};
+
 interface CartProviderProps {
   children: ReactNode;
 }
@@ -46,7 +55,7 @@ interface CartProviderProps {
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(false);
-  const { token } = useContext(AuthContext);
+  const { token } = useAuth();
 
   useEffect(() => {
     if (token) {
