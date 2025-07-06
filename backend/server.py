@@ -145,6 +145,23 @@ app.add_middleware(
 
 # Initialize database with sample data
 async def init_database():
+    # Create admin user if it doesn't exist
+    admin_email = "admin@joshibrothers.com"
+    if not users_collection.find_one({"email": admin_email}):
+        admin_password = bcrypt.hashpw("Admin@123".encode('utf-8'), bcrypt.gensalt())
+        admin_user = {
+            "id": str(uuid.uuid4()),
+            "name": "Admin",
+            "email": admin_email,
+            "password": admin_password.decode('utf-8'),
+            "phone": None,
+            "address": None,
+            "role": "admin",
+            "created_at": datetime.utcnow()
+        }
+        users_collection.insert_one(admin_user)
+        print(f"Admin user created: {admin_email} / Admin@123")
+    
     # Create sample categories
     categories = [
         {"id": str(uuid.uuid4()), "name": "Dairy", "description": "Fresh dairy products", "icon": "🧈"},
