@@ -7,7 +7,7 @@ import sys
 from datetime import datetime
 
 # Configuration
-BASE_URL = "http://localhost:8001"
+BASE_URL = "http://localhost:8001"  # Using the backend URL from frontend/.env
 API_URL = f"{BASE_URL}/api"
 
 # Test user data
