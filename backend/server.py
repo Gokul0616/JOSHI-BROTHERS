@@ -1,6 +1,9 @@
-from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi import FastAPI, HTTPException, Depends, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from typing import List, Optional, Dict
 import os
@@ -132,7 +135,7 @@ async def lifespan(app: FastAPI):
     await init_database()
     yield
 
-app = FastAPI(title="Joshi Brothers API", lifespan=lifespan)
+app = FastAPI(title="Hyperpure API", lifespan=lifespan)
 
 # CORS middleware
 app.add_middleware(
@@ -142,6 +145,23 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount admin templates directory
+try:
+    os.makedirs("admin_templates", exist_ok=True)
+    templates = Jinja2Templates(directory="admin_templates")
+except Exception as e:
+    print(f"Template directory error: {e}")
+
+# Admin Panel Route
+@app.get("/admin", response_class=HTMLResponse)
+@app.get("/admin/", response_class=HTMLResponse)
+@app.get("/admin/{path:path}", response_class=HTMLResponse)
+async def admin_panel(request: Request, path: str = ""):
+    try:
+        return templates.TemplateResponse("index.html", {"request": request})
+    except Exception as e:
+        return HTMLResponse(content=f"<h1>Admin Panel Loading...</h1><p>Error: {str(e)}</p>", status_code=500)
 
 # Initialize database with sample data
 async def init_database():
@@ -170,6 +190,10 @@ async def init_database():
         {"id": str(uuid.uuid4()), "name": "Frozen Foods", "description": "Frozen items", "icon": "🧊"},
         {"id": str(uuid.uuid4()), "name": "Sauces & Condiments", "description": "Flavor enhancers", "icon": "🍅"},
         {"id": str(uuid.uuid4()), "name": "Bakery Products", "description": "Fresh baked goods", "icon": "🍞"},
+        {"id": str(uuid.uuid4()), "name": "Oils & Vinegars", "description": "Cooking oils and vinegars", "icon": "🫒"},
+        {"id": str(uuid.uuid4()), "name": "Beverages", "description": "Drinks and beverages", "icon": "🥤"},
+        {"id": str(uuid.uuid4()), "name": "Pulses & Grains", "description": "Lentils, rice, and grains", "icon": "🌾"},
+        {"id": str(uuid.uuid4()), "name": "Snacks & Sweets", "description": "Ready-to-eat snacks", "icon": "🍪"},
     ]
     
     for category in categories:
@@ -178,12 +202,14 @@ async def init_database():
     
     # Create sample brands
     brands = [
-        {"id": str(uuid.uuid4()), "name": "Ching's Secret", "logo": "/assets/Brand Images/ching'ssecret.jpg"},
-        {"id": str(uuid.uuid4()), "name": "Everest", "logo": "/assets/Brand Images/everest.jpg"},
-        {"id": str(uuid.uuid4()), "name": "Farm King", "logo": "/assets/Brand Images/farmking.jpg"},
-        {"id": str(uuid.uuid4()), "name": "Funfoods", "logo": "/assets/Brand Images/funfoods.jpg"},
-        {"id": str(uuid.uuid4()), "name": "MDH", "logo": "/assets/Brand Images/mdh.jpg"},
-        {"id": str(uuid.uuid4()), "name": "Knorr", "logo": "/assets/Brand Images/knorr.jpg"},
+        {"id": str(uuid.uuid4()), "name": "Ching's Secret", "logo": "https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=100&h=100&fit=crop"},
+        {"id": str(uuid.uuid4()), "name": "Everest", "logo": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=100&h=100&fit=crop"},
+        {"id": str(uuid.uuid4()), "name": "Farm King", "logo": "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=100&h=100&fit=crop"},
+        {"id": str(uuid.uuid4()), "name": "Funfoods", "logo": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=100&h=100&fit=crop"},
+        {"id": str(uuid.uuid4()), "name": "MDH", "logo": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=100&h=100&fit=crop"},
+        {"id": str(uuid.uuid4()), "name": "Knorr", "logo": "https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=100&h=100&fit=crop"},
+        {"id": str(uuid.uuid4()), "name": "Nestlé", "logo": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=100&h=100&fit=crop"},
+        {"id": str(uuid.uuid4()), "name": "Amul", "logo": "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=100&h=100&fit=crop"},
     ]
     
     for brand in brands:
@@ -198,43 +224,21 @@ async def init_database():
             "description": "Premium quality fresh cream for cooking and baking",
             "price": 150.0,
             "category": "Dairy",
-            "brand": "Farm King",
-            "image_url": "/assets/productimages/dairy/cream.png",
+            "brand": "Amul",
+            "image_url": "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&h=300&fit=crop",
             "stock": 50,
             "unit": "500ml"
         },
         {
             "id": str(uuid.uuid4()),
-            "name": "Milk Powder",
-            "description": "High-quality milk powder for beverages and cooking",
-            "price": 320.0,
-            "category": "Dairy",
+            "name": "Organic Tomatoes",
+            "description": "Fresh organic tomatoes, farm-picked",
+            "price": 80.0,
+            "category": "Fruits & Vegetables",
             "brand": "Farm King",
-            "image_url": "/assets/productimages/dairy/milk-powder.png",
-            "stock": 30,
+            "image_url": "https://images.unsplash.com/photo-1546470427-e15c3b6b1e2c?w=300&h=300&fit=crop",
+            "stock": 100,
             "unit": "1kg"
-        },
-        {
-            "id": str(uuid.uuid4()),
-            "name": "Cheese",
-            "description": "Fresh cheese for pizza and cooking",
-            "price": 280.0,
-            "category": "Dairy",
-            "brand": "Go Cheese",
-            "image_url": "/assets/productimages/dairy/cheese.png",
-            "stock": 25,
-            "unit": "200g"
-        },
-        {
-            "id": str(uuid.uuid4()),
-            "name": "Butter",
-            "description": "Premium butter for cooking and baking",
-            "price": 180.0,
-            "category": "Dairy",
-            "brand": "Nutralite",
-            "image_url": "/assets/productimages/dairy/butter.png",
-            "stock": 40,
-            "unit": "100g"
         },
         {
             "id": str(uuid.uuid4()),
@@ -243,8 +247,8 @@ async def init_database():
             "price": 85.0,
             "category": "Spices & Seasonings",
             "brand": "MDH",
-            "image_url": "/assets/Brand Images/mdh.jpg",
-            "stock": 100,
+            "image_url": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300&h=300&fit=crop",
+            "stock": 75,
             "unit": "100g"
         },
         {
@@ -254,9 +258,53 @@ async def init_database():
             "price": 45.0,
             "category": "Sauces & Condiments",
             "brand": "Knorr",
-            "image_url": "/assets/Brand Images/knorr.jpg",
+            "image_url": "https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=300&h=300&fit=crop",
             "stock": 60,
             "unit": "200ml"
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Paneer",
+            "description": "Fresh cottage cheese",
+            "price": 120.0,
+            "category": "Dairy",
+            "brand": "Amul",
+            "image_url": "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=300&h=300&fit=crop",
+            "stock": 40,
+            "unit": "200g"
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Onions",
+            "description": "Fresh red onions",
+            "price": 60.0,
+            "category": "Fruits & Vegetables",
+            "brand": "Farm King",
+            "image_url": "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=300&h=300&fit=crop",
+            "stock": 80,
+            "unit": "1kg"
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Basmati Rice",
+            "description": "Premium aged basmati rice",
+            "price": 200.0,
+            "category": "Pulses & Grains",
+            "brand": "Farm King",
+            "image_url": "https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=300&h=300&fit=crop",
+            "stock": 30,
+            "unit": "1kg"
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Olive Oil",
+            "description": "Extra virgin olive oil",
+            "price": 450.0,
+            "category": "Oils & Vinegars",
+            "brand": "Farm King",
+            "image_url": "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=300&h=300&fit=crop",
+            "stock": 25,
+            "unit": "500ml"
         }
     ]
     
@@ -561,7 +609,8 @@ async def update_category(category_id: str, category: CategoryCreate, admin_data
 @app.delete("/api/admin/categories/{category_id}")
 async def delete_category(category_id: str, admin_data: dict = Depends(verify_admin_token)):
     # Check if category is being used by any products
-    if products_collection.find_one({"category": categories_collection.find_one({"id": category_id})["name"]}):
+    category_name = categories_collection.find_one({"id": category_id})
+    if category_name and products_collection.find_one({"category": category_name["name"]}):
         raise HTTPException(status_code=400, detail="Cannot delete category that is being used by products")
     
     result = categories_collection.delete_one({"id": category_id})
@@ -596,7 +645,8 @@ async def update_brand(brand_id: str, brand: BrandCreate, admin_data: dict = Dep
 @app.delete("/api/admin/brands/{brand_id}")
 async def delete_brand(brand_id: str, admin_data: dict = Depends(verify_admin_token)):
     # Check if brand is being used by any products
-    if products_collection.find_one({"brand": brands_collection.find_one({"id": brand_id})["name"]}):
+    brand_name = brands_collection.find_one({"id": brand_id})
+    if brand_name and products_collection.find_one({"brand": brand_name["name"]}):
         raise HTTPException(status_code=400, detail="Cannot delete brand that is being used by products")
     
     result = brands_collection.delete_one({"id": brand_id})
