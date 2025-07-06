@@ -40,6 +40,10 @@ class UserLogin(BaseModel):
     email: str
     password: str
 
+class AdminLogin(BaseModel):
+    email: str
+    password: str
+
 class Product(BaseModel):
     id: str
     name: str
@@ -50,6 +54,38 @@ class Product(BaseModel):
     image_url: str
     stock: int
     unit: str
+
+class ProductCreate(BaseModel):
+    name: str
+    description: str
+    price: float
+    category: str
+    brand: str
+    image_url: str
+    stock: int
+    unit: str
+
+class ProductUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    price: Optional[float] = None
+    category: Optional[str] = None
+    brand: Optional[str] = None
+    image_url: Optional[str] = None
+    stock: Optional[int] = None
+    unit: Optional[str] = None
+
+class CategoryCreate(BaseModel):
+    name: str
+    description: str
+    icon: str
+
+class BrandCreate(BaseModel):
+    name: str
+    logo: str
+
+class OrderStatusUpdate(BaseModel):
+    status: str
     
 class CartItem(BaseModel):
     product_id: str
