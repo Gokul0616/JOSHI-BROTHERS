@@ -453,6 +453,190 @@ async def get_orders(user_data: dict = Depends(verify_token)):
     orders = list(orders_collection.find({"user_id": user_id}, {"_id": 0}))
     return {"orders": orders}
 
+# Admin endpoints
+@app.post("/api/admin/login")
+async def admin_login(admin: AdminLogin):
+    # Find admin user
+    db_user = users_collection.find_one({"email": admin.email, "role": "admin"})
+    if not db_user:
+        raise HTTPException(status_code=401, detail="Invalid admin credentials")
+    
+    # Verify password
+    if not bcrypt.checkpw(admin.password.encode('utf-8'), db_user["password"].encode('utf-8')):
+        raise HTTPException(status_code=401, detail="Invalid admin credentials")
+    
+    # Generate token
+    token = jwt.encode({
+        "user_id": db_user["id"],
+        "email": admin.email,
+        "role": "admin",
+        "exp": datetime.utcnow() + timedelta(days=7)
+    }, JWT_SECRET, algorithm='HS256')
+    
+    return {"token": token, "admin": {"id": db_user["id"], "name": db_user["name"], "email": db_user["email"]}}
+
+@app.get("/api/admin/dashboard")
+async def admin_dashboard(admin_data: dict = Depends(verify_admin_token)):
+    # Get statistics
+    total_products = products_collection.count_documents({})
+    total_categories = categories_collection.count_documents({})
+    total_brands = brands_collection.count_documents({})
+    total_users = users_collection.count_documents({"role": {"$ne": "admin"}})
+    total_orders = orders_collection.count_documents({})
+    
+    # Get recent orders
+    recent_orders = list(orders_collection.find({}, {"_id": 0}).sort("order_date", -1).limit(5))
+    
+    # Get order status distribution
+    order_statuses = list(orders_collection.aggregate([
+        {"$group": {"_id": "$status", "count": {"$sum": 1}}}
+    ]))
+    
+    return {
+        "statistics": {
+            "total_products": total_products,
+            "total_categories": total_categories,
+            "total_brands": total_brands,
+            "total_users": total_users,
+            "total_orders": total_orders
+        },
+        "recent_orders": recent_orders,
+        "order_statuses": order_statuses
+    }
+
+# Product Management
+@app.post("/api/admin/products")
+async def create_product(product: ProductCreate, admin_data: dict = Depends(verify_admin_token)):
+    product_data = product.dict()
+    product_data["id"] = str(uuid.uuid4())
+    
+    products_collection.insert_one(product_data)
+    return {"message": "Product created successfully", "product_id": product_data["id"]}
+
+@app.put("/api/admin/products/{product_id}")
+async def update_product(product_id: str, product: ProductUpdate, admin_data: dict = Depends(verify_admin_token)):
+    update_data = {k: v for k, v in product.dict().items() if v is not None}
+    
+    if not update_data:
+        raise HTTPException(status_code=400, detail="No fields to update")
+    
+    result = products_collection.update_one({"id": product_id}, {"$set": update_data})
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    return {"message": "Product updated successfully"}
+
+@app.delete("/api/admin/products/{product_id}")
+async def delete_product(product_id: str, admin_data: dict = Depends(verify_admin_token)):
+    result = products_collection.delete_one({"id": product_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    return {"message": "Product deleted successfully"}
+
+# Category Management
+@app.post("/api/admin/categories")
+async def create_category(category: CategoryCreate, admin_data: dict = Depends(verify_admin_token)):
+    # Check if category already exists
+    if categories_collection.find_one({"name": category.name}):
+        raise HTTPException(status_code=400, detail="Category already exists")
+    
+    category_data = category.dict()
+    category_data["id"] = str(uuid.uuid4())
+    
+    categories_collection.insert_one(category_data)
+    return {"message": "Category created successfully", "category_id": category_data["id"]}
+
+@app.put("/api/admin/categories/{category_id}")
+async def update_category(category_id: str, category: CategoryCreate, admin_data: dict = Depends(verify_admin_token)):
+    result = categories_collection.update_one({"id": category_id}, {"$set": category.dict()})
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Category not found")
+    
+    return {"message": "Category updated successfully"}
+
+@app.delete("/api/admin/categories/{category_id}")
+async def delete_category(category_id: str, admin_data: dict = Depends(verify_admin_token)):
+    # Check if category is being used by any products
+    if products_collection.find_one({"category": categories_collection.find_one({"id": category_id})["name"]}):
+        raise HTTPException(status_code=400, detail="Cannot delete category that is being used by products")
+    
+    result = categories_collection.delete_one({"id": category_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Category not found")
+    
+    return {"message": "Category deleted successfully"}
+
+# Brand Management
+@app.post("/api/admin/brands")
+async def create_brand(brand: BrandCreate, admin_data: dict = Depends(verify_admin_token)):
+    # Check if brand already exists
+    if brands_collection.find_one({"name": brand.name}):
+        raise HTTPException(status_code=400, detail="Brand already exists")
+    
+    brand_data = brand.dict()
+    brand_data["id"] = str(uuid.uuid4())
+    
+    brands_collection.insert_one(brand_data)
+    return {"message": "Brand created successfully", "brand_id": brand_data["id"]}
+
+@app.put("/api/admin/brands/{brand_id}")
+async def update_brand(brand_id: str, brand: BrandCreate, admin_data: dict = Depends(verify_admin_token)):
+    result = brands_collection.update_one({"id": brand_id}, {"$set": brand.dict()})
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Brand not found")
+    
+    return {"message": "Brand updated successfully"}
+
+@app.delete("/api/admin/brands/{brand_id}")
+async def delete_brand(brand_id: str, admin_data: dict = Depends(verify_admin_token)):
+    # Check if brand is being used by any products
+    if products_collection.find_one({"brand": brands_collection.find_one({"id": brand_id})["name"]}):
+        raise HTTPException(status_code=400, detail="Cannot delete brand that is being used by products")
+    
+    result = brands_collection.delete_one({"id": brand_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Brand not found")
+    
+    return {"message": "Brand deleted successfully"}
+
+# Order Management
+@app.get("/api/admin/orders")
+async def get_all_orders(admin_data: dict = Depends(verify_admin_token)):
+    orders = list(orders_collection.find({}, {"_id": 0}).sort("order_date", -1))
+    
+    # Get user details for each order
+    for order in orders:
+        user = users_collection.find_one({"id": order["user_id"]}, {"_id": 0, "password": 0})
+        if user:
+            order["user_details"] = user
+    
+    return {"orders": orders}
+
+@app.put("/api/admin/orders/{order_id}/status")
+async def update_order_status(order_id: str, status_update: OrderStatusUpdate, admin_data: dict = Depends(verify_admin_token)):
+    result = orders_collection.update_one(
+        {"id": order_id}, 
+        {"$set": {"status": status_update.status}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Order not found")
+    
+    return {"message": "Order status updated successfully"}
+
+# User Management
+@app.get("/api/admin/users")
+async def get_all_users(admin_data: dict = Depends(verify_admin_token)):
+    users = list(users_collection.find({"role": {"$ne": "admin"}}, {"_id": 0, "password": 0}))
+    return {"users": users}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)
