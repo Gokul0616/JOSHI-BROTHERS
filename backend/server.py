@@ -152,7 +152,8 @@ app.add_middleware(
 @app.get("/admin/{path:path}", response_class=HTMLResponse)
 async def admin_panel(request: Request, path: str = ""):
     try:
-        with open("admin_templates/index.html", "r") as f:
+        admin_html_path = os.path.join(os.path.dirname(__file__), "admin_templates", "index.html")
+        with open(admin_html_path, "r") as f:
             content = f.read()
         return HTMLResponse(content=content)
     except Exception as e:
